@@ -1,0 +1,167 @@
+
+<label id="text"><input id="inputtext" type="text" /></label>
+<button id="search-button" onclick="Search()">Search</button><br><br>
+<div id="Video">
+	<div id="PlayVideo"></div>
+</div><br>
+<br><div class="ThumbVideo"></div>
+<style type="text/css">
+
+
+#text{
+padding-left:5%;
+}
+
+#inputtext{
+width:65%;
+}
+
+.ThumbVideo{
+overflow-x:auto;
+overflow-y:hidden;
+white-space:nowrap;
+width:100%;
+padding-left:5%;
+
+}
+
+.Videos{
+width:200px;
+margin:2px;
+text-align:center;
+display:inline-block;
+vertical-align:top;
+white-space:nowrap;
+text-overflow:ellipsis;
+overflow: hidden;
+
+}
+
+.Videos:hover{
+background-color:grey;
+}
+
+.Lyrics:hover{
+background-color:grey;
+}
+
+.LyricText{
+text-align:center;
+line-height:200%;
+}
+
+#PlayVideo{
+padding-left:5%;
+}
+
+
+</style>
+<script type="text/javascript">
+function Search() {
+	 var input = document.getElementById("inputtext").value;
+	 if (input == "") {
+	        alert("The Input Field Is Empty");
+	    }else{
+	    keyWordsearch();
+	    LyricSearch();
+		}
+	}
+
+	function keyWordsearch() {
+	    $('.ThumbVideo').empty();
+	    var input = document.getElementById("inputtext").value;
+
+
+	        $.ajax({
+	            url: "https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + input + "&maxResults=20&key=",
+	            dataType: "JSON",
+	            cache: false,
+	        }).done(function(data) {
+	            if (data.items.length == 0) {
+	                alert("Could Not Find Any Videos with Input " + input);
+	                return;
+	            } else {
+	                for (var i = 0; i < data.items.length; i++) {
+	                    vidTitle = data.items[i].snippet.title;
+	                    vidDescription = data.items[i].snippet.description;
+	                    vidPublished = data.items[i].snippet.publishedAt;
+	                    vidID = data.items[i].id.videoId;
+	                    videoThumbUrl = data.items[i].snippet.thumbnails.default.url;
+	                    videoTHumbImg = '<pre><img src="' + videoThumbUrl + '" alt="No Image Available." style=width:204px;height:128px"></a></pre>';
+	                    $('.ThumbVideo').append('<div align="center" id="' + vidID + '" class="Videos" data-published="' + vidPublished + '" data-desc="' + vidDescription + '" data-title="' + vidTitle + '">' + vidTitle + videoTHumbImg + '</div>');
+	                }
+	            }
+
+	            $('.Videos').on("click", thumbnailclick);
+
+	        }).fail(function() {
+	            alert("Failed to Load Data");
+	        });
+
+	}
+
+	function thumbnailclick() {
+	    var title = $(this).attr("data-title");
+	    var desc = $(this).attr("data-desc");
+	    var published = $(this).attr("data-published");
+
+	    var newtitle = title.fontsize("5");
+	    var newdesc = desc.fontsize("3");
+	    var newpublished = published.fontsize("3");
+
+
+	    $('#PlayVideo').empty();
+	    $('#PlayVideo').append(newtitle + '<p></p><iframe width="520" height="340" src="http://www.youtube.com/embed/' + this.id + '?autoplay=1"></iframe><p></p>' + newdesc + '<p></p><p></p>' + newpublished);
+	}
+
+	function LyricSearch() {
+	    var input = document.getElementById("inputtext").value;
+	    $('.nav').empty();
+
+	    $.ajax({
+	        url: "https://musixmatchcom-musixmatch.p.mashape.com/wsr/1.1/track.search?q=" + input + "&page=1&page_size=6&mashape-key=",
+	        dataType: "JSON",
+	        cache: false,
+	    }).done(function(data) {
+	        if (data.length == 0) {
+	            alert("Could Not Find Any Lyrics with the Input " + input);
+	            return;
+	        } else {
+	            for (var i = 0; i < data.length; i++) {
+	                trackname = data[i].track_name;
+	                artistname = data[i].artist_name;
+	                albumname = data[i].album_name;
+	                albumimg = data[i].album_coverart_100x100;
+	                trackid = data[i].track_id;
+	                thumbimg = '<pre><img src="' + albumimg + '" alt="No Image Available." style=width:100px;height:100px"></a></pre>';
+	                thumbname = '<pre>' + trackname + '</pre>';
+	                $(".nav").append('<div id="' + trackid + '" class="Lyrics">' + thumbname + thumbimg + '</div>');
+	            }
+	        }
+	        $('.Lyrics').on("click", lyricclick);
+	    }).fail(function() {
+	        alert("Failed to Load Data");
+	    });
+	}
+
+	function lyricclick() {
+	    $('.nav').empty();
+	    var id = this.id;
+
+	    $.ajax({
+	        url: "https://musixmatchcom-musixmatch.p.mashape.com/wsr/1.1/track.lyrics.get?track_id=" + id + "&mashape-key=",
+	        dataType: "JSON",
+	        cache: false,
+	    }).done(function(data) {
+	        lyric = data.lyrics_body;
+	        $('.nav').append('<p class="LyricText">' + lyric + '</p>');
+
+
+	    }).fail(function() {
+	        alert("Failed to Load Data");
+	    });
+	}
+
+
+
+</script>
