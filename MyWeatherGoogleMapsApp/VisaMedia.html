@@ -1,0 +1,96 @@
+	<h1 id="showMedia">Visa Media</h1></br>
+	<h4>Här Ser Du Dina Media<hr></h4>
+	<div id="myImages" width="100%" height="100%"><h2>Mina Bilder</h2></div></br>
+	<div id="myVideos"><h2>Mina Videos</h2></div></br>
+	<div id="myAudio"><h2>Mina Audio</h2></div></br>
+
+	<style type="text/css">
+	#showMedia{
+	font-size:40px;
+	color:blue;
+	}
+	#myImages{
+	display:none;
+	}
+	#myVideos{
+	display:none;
+	}
+	#myAudio{
+	display:none;
+	}
+	h2{
+	font-size:40px;
+	text-decoration:underline;
+	}
+	.img{
+	font-size:25px;
+	color:blue;
+	}
+	.vid{
+	font-size:25px;
+	color:red;
+	}
+	.aud{
+	font-size:25px;
+	color:green;
+	}
+
+	
+	</style>
+	
+	<script type="text/javascript">
+				$("#myImages").show();
+				$.ajax({
+				url: "server.php",
+				data: {action: "getMedia", type: "photo"},
+				dataType: "json",
+				cache: false,
+				}).done(function(data){
+					var files = data.files;
+					for(var i = 0; i < files.length; i++){
+						var img = files[i].path;
+						var title = files[i].title;
+						var imgResult = "<img src=" + img + " width='320' height='240'>";
+						$("#myImages").append("</br>" + "<h3 class=img>Title: " + title + "</h3>" + "</br>" + "<div class=div width='25%' height='25%'>" + imgResult + "</div><hr>");
+					}
+				}).fail(function(){
+					alert("Failed To Load Images");
+					});
+					$("#myVideos").show();
+					$.ajax({
+					url: "server.php",
+					data: {action: "getMedia", type: "video"},
+					dataType: "json",
+					cache: false,
+					}).done(function(data){
+					var files = data.files;
+					for(var i = 0; i < files.length; i++){
+						var video = files[i].path;
+						var title = files[i].title;
+						var src = "<video width='320' height='240' controls='controls'>";
+						var vidResult = "<source src=" + video + ">";
+						$("#myVideos").append("</br>" + "<h3 class=vid>Title: " + title + "</h3>" + "<div class=div width='25%' height='25%'>" + src + vidResult + "Your browser does not support the video tag</video></div><hr>");
+					}
+				}).fail(function(){
+					alert("Failed To Load Videos");
+				});
+				
+					$("#myAudio").show();
+					$.ajax({
+					url: "server.php",
+					data: {action: "getMedia", type: "audio"},
+					dataType: "json",
+					cache: false,
+					}).done(function(data){
+					var files = data.files;
+					for(var i = 0; i < files.length; i++){
+						var audio = files[i].path;
+						var audResult = "<source src=" + audio + ">";
+						var title = files[i].title;
+						$("#myAudio").append("</br>" + "<h3 class=aud>Title: " + title + "</h3>" + "</br>" + "<div class=div width='25%' height='25%'><audio controls>"+ audResult + "Your browser does not support the audio element</audio></div><hr>");
+					}
+				}).fail(function(){
+					alert("Failed To Load Audio");
+					});
+				
+	</script>

@@ -1,0 +1,69 @@
+<h1 id="start">Start</h1></br>
+<h4>Välkommen Till Min Nytto-App!!!!<hr></h4></br>
+<h2>Vädret Just Nu:</h2>
+<p id="cityStyle">Stad:<span id="city"></span></p>
+<p id="tempStyle">Temperatur(C):<span id="temperature"></span></p>
+<img src="" id="WeatherImage" width="30%" height="15%">
+<p id="weatherStyle">Väder:<span id="weather"></span></p>
+
+<style type="text/css">
+#start{
+font-size:40px;
+color:blue;
+}
+#temperature{
+color:blue;
+}
+#weather{
+color:blue;
+}
+#city{
+color:blue;
+}
+#cityStyle{
+font-size:20px;
+}
+#tempStyle{
+font-size:20px;
+}
+#weatherStyle{
+font-size:20px;
+}
+</style>
+<script type="text/javascript">
+				if(navigator.geolocation){
+					navigator.geolocation.getCurrentPosition(initLocation,showError, {enableHighAccuracy: true});;
+				}else{
+					alert("Din webbläsare stödjer inte geolocation");
+				}
+			
+		
+	function initLocation(position){
+	var lon = position.coords.longitude;
+	var lat = position.coords.latitude;
+	var temp,celsius,icon,imageurl,city;
+	$.ajax({
+		url: "http://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon,
+		dataType: "JSON",
+		cache: false,
+	}).done(function(data) {
+			$("#loading").fadeOut(100);
+			temp = data.main.temp;
+			celsius = temp - 273.15;
+			icon = data.weather[0].icon;
+			city = data.name;
+			$("#temperature").text(" " + celsius.toFixed(2) + " C");
+			$("#weather").text(" " + data.weather[0].description);
+			$("#city").text(" " + city);
+			imageurl = "http://openweathermap.org/img/w/" + icon + ".png";
+			$("#WeatherImage").attr('src', imageurl);
+			
+		}).fail(function(){
+			alert("Gick Ej Ladda Position och Väder");
+		});
+		$("#loading").fadeIn(100);
+	}
+	function showError(error){
+		alert("Något är fel...");
+		}	
+</script>

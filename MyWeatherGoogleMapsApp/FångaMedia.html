@@ -1,0 +1,115 @@
+<h1 id="media">Fånga Media som foto/audio/video</h1></br>
+<p id="settings">Fånga Media Med Din Enhet.<hr></p></br>
+<form action="server.php" enctype="multipart/form-data" method="post" id="save">
+	<label for="title">Titel</label><input type="text" name="title" id="title">
+	<section id="style">
+	<select name="type" id="selected" onchange="showBtns()">
+		<option value="">Välj typ här</option>
+		<option value="photo">Foto</option>
+		<option value="video">Video</option>
+		<option value="audio">Ljud</option>
+	</select>
+		</br>
+		<input type="file" name="media" accept="image/*" capture="camera" id="photo">
+		<input type="file" name="media" accept="video/*" capture="camcorder" id="video">
+		<input type="file" name="media" accept="audio/*" capture="microphone" id="audio">
+		</br><input type="submit" value="Spara media" id="btnSave">
+		<p>Hur Många % kvar Till Filen Har Laddats Upp Till Servern:<span id="progress"></span></p>
+		</section>
+		</form>
+
+<style type="text/css">
+	#media{
+	font-size:40px;
+	color:blue;
+	}
+
+	#namn{
+	width:100%;
+	}
+	
+	#film{
+	width:100%;
+	}
+	#style{
+	padding-left:25px;
+	}
+	#photo{
+	display:none;
+	}
+	#video{
+	display:none;
+	}
+	#audio{
+	display:none;
+	}
+	
+</style>
+
+
+
+<script type="text/javascript">
+var input = document.getElementById('title');
+function showBtns(){
+	var selected = $("#selected").val();
+	if(selected == "photo"){
+	$("#photo").show();
+	$("#video").hide();
+	$("#audio").hide();
+	alert("Välj en BildFil Att Ladda Upp Till Servern");
+	}else if(selected == "video"){
+	$("#audio").hide();
+	$("#photo").hide();
+	$("#video").show();
+	alert("Välj en VideoFil Att Ladda Upp Till Servern");
+	}else if(selected == "audio"){
+	$("#audio").show();
+	$("#photo").hide();
+	$("#video").hide();
+	alert("Välj en LjudFil Att Ladda Upp Till Servern");
+	}else if(selected == ""){
+	$("#photo").hide();
+	$("#video").hide();
+	$("#audio").hide();
+	}
+	}
+		$("#save").on("submit", function(e){
+		var selected = $("#selected").val();
+		var photo = $("#photo").val();
+		var video = $("#video").val();
+		var audio = $("#audio").val();
+		e.preventDefault();
+		if(input.value.length == 0){
+		alert("Please Enter A Title");
+		}else if((photo != "")||(video != "")||(audio != "")){
+		$("#save").ajaxSubmit({
+				success: function(data){
+					$("#loading").fadeOut();
+					console.log(data);
+					alert("File Was Succesfully uploaded");
+					document.getElementById("save").reset();
+					$("#progress").empty();
+					$("#photo").hide();
+					$("#video").hide();
+					$("#audio").hide();
+				},
+				error: function(){
+				alert("Exceeded Server Time Limit");
+				},
+				uploadProgress: function(event, position, total, percentComplete){
+				$("#loading").fadeIn();
+				$("#progress").text(" " + percentComplete + "%");
+				console.log(percentComplete);
+				}
+			});
+		
+		
+		}else{
+		alert("Please Choose Media Before Uploading");
+		}		
+		}
+		);
+
+
+
+</script>
