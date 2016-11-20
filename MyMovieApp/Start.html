@@ -1,0 +1,28 @@
+<h1 id="start">Start</h1></br>
+<p>Välkommen Till Min Fina Filmsida!!!!<hr></p></br>
+
+<section class="mobileVersion">
+<label for="user:">Användare:</label></br>
+<output id="user"></output></br></br>
+<label for="favmovie">Favorit Film:</label><br>
+<output id="favmovie"></output>
+</section>
+
+<style type="text/css">
+#start{
+font-size:40px;
+color:blue;
+}
+</style>
+
+<script type="text/javascript">
+$(document).ready(start);
+function start(){
+	var getName = localStorage.getItem("name");
+	var getMovie = localStorage.getItem("movie");
+
+	$("#user").append(getName);
+	$("#favmovie").append(getMovie);
+
+}
+</script>

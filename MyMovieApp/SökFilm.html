@@ -1,0 +1,106 @@
+<h1 id="searchMovie">Sök Film</h1></br>
+<p>Här kan du söka filmer via Title Namn:</p>
+</br><label for="ftitle: ">Filmtitel:<label></br>
+<input type="text" name="title" id="title"><br>
+<button type="button" id="stitle">Sök Efter Titel</button>
+</br></br><div id='movieoutput'></div></br>
+
+<style type="text/css">
+	
+	#searchMovie{
+	font-size:40px;
+	color:blue;
+	}
+	.div{
+	background-color:white;
+	border-bottom:white;
+	}
+	
+	.movie{
+	width:100%;
+	}
+
+	#title{
+	width:100%;
+	}
+	
+	#stitle{
+	width:100%;
+	}
+	#id{
+	width:100%;
+	}
+	#sid{
+	width:100%;
+	}
+</style>
+
+<script type="text/javascript">
+$("#stitle").on("click",searchMovie);
+	function searchMovie(){
+	$("#movieoutput").empty();
+	var inputtext = $("#title").val();
+	var title,year,id,type = "";
+
+	var titleres = "Title: ";
+	var yearres = "Year: ";
+	var idres = "ID: ";
+	var typeres = "Type: ";
+	
+	
+	if(inputtext == ""){
+		alert("Tom Sök Fält");
+	} else {
+	$("#loading").fadeIn(300);
+	$.ajax({
+		url: "http://www.omdbapi.com/?s=" + inputtext,
+		dataType:"JSON",
+		cache: false,
+		}).done(function(data) {	
+			for(var i = 0; i < data.Search.length; i++){
+				title = data.Search[i].Title;
+				year = data.Search[i].Year;
+				id = data.Search[i].imdbID;
+				type = data.Search[i].Type;
+				
+				
+				
+				
+				titleres = titleres.fontsize("5");
+				year = year.fontcolor("green");
+				yearres = yearres.fontcolor("green").fontsize("5");
+				id = id.fontcolor("blue");
+				idres = idres.fontsize("5").fontcolor("blue");
+				type = type.fontcolor("red");
+				typeres = typeres.fontcolor("red").fontsize("5");
+				var total = titleres + title + "</br>" + yearres + year + "</br>" + idres + id + "</br>" + typeres + type;
+				$("#movieoutput").append("</br><div class=div>" + total + "</br>" + "<button class='movie' data-title='" + title +"'>Favorit Film</button>"+ "</br>" + "</div>");				
+				}
+				$("#loading").fadeOut(300);
+				$("#title").val("");
+				$(".movie").on("click",favoMovie);
+		}).fail(function(){
+			alert("Det gick inte att hämta sidan");
+			$("#loading").fadeOut(300);
+		});
+		}
+}
+
+
+function favoMovie() {
+	var title = $(this).attr("data-title");
+	localStorage.setItem("movie",title);
+	document.getElementById('tab_favmovie').innerHTML = title;
+	alert("Du Har Lagt Till: " + title + " som Din Nya Favorit Film");
+}	
+
+
+
+
+
+
+
+</script>
+		
+		
+	

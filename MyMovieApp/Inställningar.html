@@ -1,0 +1,61 @@
+<h1 id="settingHtml">Inställningar</h1></br>
+<p id="settings">Innan vi sätter igång behöver vi veta lite information kring dig.<hr></p></br>
+<label for="namn:">Namn:</label>
+</br><input type="text" name="namn" id="namn"></br>
+</br><label for="film:">Favoritfilm:</label>
+</br><input type="text" name="film" id="film"> 
+</br><button type="button" id="save">Spara</button>
+
+<style type="text/css">
+	#settingHtml{
+	font-size:40px;
+	color:blue;
+	}
+	
+	#namn{
+	width:100%;
+	}
+	
+	#film{
+	width:100%;
+	}
+	
+	#save{
+	width:100%;
+	}
+
+</style>
+
+
+
+<script type="text/javascript">
+$(document).ready(load);
+function load() {
+	var getName = localStorage.getItem("name");
+	var getMovie = localStorage.getItem("movie");
+	
+	$("#namn").val(getName);
+	$("#film").val(getMovie);
+}
+
+$("#save").on("click", saveUser);
+function saveUser(){
+	var name = $("#namn").val();
+	var movie = $("#film").val();
+	
+	localStorage.setItem("name",name);
+	localStorage.setItem("movie",movie);
+	
+	document.getElementById('tab_user').innerHTML = name;
+	document.getElementById('tab_favmovie').innerHTML = movie;
+	
+	alert("Användare: " + name + "\n" + "Favorit Film: " + movie); 
+	
+	$("#namn").val("");
+	$("#film").val("");
+}
+
+
+
+
+</script>

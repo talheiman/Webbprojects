@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, height=device-height,  initial-scale=1.0, user-scalable=no;user-scalable=0;">
+		<title>Demo</title>
+		<link type="text/css" rel="stylesheet" href="css/reset.css">
+		<link type="text/css" rel="stylesheet" href="css/style.css">
+		<link type="text/css" rel="stylesheet" href="css/mobile.css" media="screen and (max-width:800px)">
+		<link type="text/css" rel="stylesheet" href="css/tablet.css" media="screen and (min-width:800px)">	
+		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+		<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+		<script type="text/javascript" src="js/script.js"></script>	
+		<script type="text/javascript">
+		$(document).ready(start);
+			function start(){
+			var getName = localStorage.getItem("name");
+			var getMovie = localStorage.getItem("movie");
+
+			$("#tab_user").append(getName);
+			$("#tab_favmovie").append(getMovie);
+
+			}
+		</script>
+	</head>
+	<body>
+		<div id="loading"><img src="img/load.gif" id="load" alt="Loading Image"></div>
+		<div id="wrapper">
+			<header>
+				<h1>Film-Appen</h1>
+				<img src="img/btnMenu.jpg" id="btnMenu" class="mobile" alt="Menu Button">
+			</header>
+			<nav id="nav">
+				<ul>
+				<li data-link="Start.html">Start</li>
+				<li data-link="SökFilm.html">Sök Film</li>
+				<li data-link="Inställningar.html">Inställning</li>
+				</ul>
+			</nav>
+			<section class="tabletVersion">
+			<label for="tab_user">Användare:</label><br>
+			<output id="tab_user"></output><br>
+			<br><label for="tab_favmovie">Favorit Film:</label><br>
+			<output id="tab_favmovie"></output>
+			</section>
+			
+			<article>
+				<section>
+				</section>
+			</article>
+			
+			<footer>
+				<h1>Copyright 2013 Kristian An </h1>
+			</footer>
+		</div>
+	</body>	
+</html>

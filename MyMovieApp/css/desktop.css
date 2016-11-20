@@ -1,0 +1,33 @@
+#wrapper{
+	width:1200px;
+	margin:20px auto;
+	overflow:hidden;
+	box-shadow:0 0 10px #666;
+}
+
+#wrapper > header{
+	/* Positionerar ut sidhuvudet */
+	height:50px;
+	/* Bakgrund och text-färg */
+	background-color:#222;
+	color:#eee;
+}
+
+#wrapper > nav{
+	/* Positionerar ut menyn */
+	height:50px;
+	/* Bakgrund */
+	background-color:#fff;
+}
+
+#wrapper > article{
+	/* Positionerar ut innehållet */
+	min-height:300px;
+}
+#wrapper > footer{
+	/* Positionerar ut sidfoten */
+	height:25px;
+	/* Bakgrund och text-färg */
+	background-color:#222;
+	color:#eee;
+}
